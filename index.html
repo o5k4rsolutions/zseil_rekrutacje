@@ -16,14 +16,11 @@ html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
 
-/* nagłówek: samo logo na środku (bez ruchu) */
 header{display:flex;justify-content:center;padding:22px 20px 18px;animation:fadeIn .8s both}
 .logo{display:flex;align-items:center;justify-content:center;text-decoration:none}
 .logo img{height:84px;max-width:100%;display:block}
-/* miejsce na własne logo – widoczne, gdy obrazek się nie załaduje */
 .logo-slot{display:none;width:220px;height:84px;border:2px dashed var(--brand);border-radius:18px;align-items:center;justify-content:center;color:var(--brand);font-weight:bold;font-size:15px}
 
-/* hero ze zdjęciem w tle */
 .hero{position:relative;color:#fff;margin:0 16px;border-radius:32px;overflow:hidden;
   background:
     linear-gradient(90deg,rgba(50,62,151,.93) 0%,rgba(50,62,151,.78) 50%,rgba(50,62,151,.40) 100%),
@@ -36,7 +33,6 @@ header{display:flex;justify-content:center;padding:22px 20px 18px;animation:fade
 .btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 24px rgba(0,0,0,.25)}
 .btn:active{transform:scale(.97)}
 
-/* telefon */
 .phone{width:240px;height:460px;margin:0 auto;background:#111;border-radius:40px;padding:10px;box-shadow:0 24px 50px rgba(0,0,0,.35);position:relative;animation:pop .8s .3s cubic-bezier(.2,.9,.3,1.2) both}
 .notch{position:absolute;top:18px;left:50%;width:72px;height:18px;background:#111;border-radius:12px;transform:translateX(-50%);z-index:3}
 .screen{background:#fff;border-radius:31px;height:100%;overflow:hidden;display:flex;flex-direction:column;color:#1a1a1a}
@@ -64,7 +60,6 @@ footer{padding:18px;text-align:center;font-size:14px;color:var(--brand)}
 @keyframes slideUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 @keyframes pop{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
-/* lajk / odlajk w pętli */
 @keyframes like{
   0%,12%{opacity:0;transform:scale(.2)}
   22%{opacity:1;transform:scale(1.25)}
@@ -92,9 +87,7 @@ footer{padding:18px;text-align:center;font-size:14px;color:var(--brand)}
 <body>
 <header>
   <a class="logo" href="#" aria-label="ZSEiL – Zespół Szkół Elektronicznych i Licealnych w Warszawie">
-    <!-- LOGO: podmień src na własny plik lub link -->
     <img src="https://zseil.edu.pl/new/wp-content/themes/zseil-2027/assets/images/xlogo-zseil.png.pagespeed.ic.aHk5XasK9m.png" alt="ZSEiL" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <span class="logo-slot">Tu wstaw logo</span>
   </a>
 </header>
 
@@ -108,7 +101,7 @@ footer{padding:18px;text-align:center;font-size:14px;color:var(--brand)}
     <div class="phone" aria-hidden="true">
       <div class="notch"></div>
       <div class="screen">
-        <div class="p-head"><span class="avatar">Z</span>zseil_media</div>
+        <div class="p-head"><span class="avatar">Z</span>zseil_warszawa</div>
         <div class="p-img">
           <div class="big">
             <svg viewBox="0 0 24 24"><path class="fill" d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.800-8 11-8 11z"/></svg>
@@ -124,10 +117,6 @@ footer{padding:18px;text-align:center;font-size:14px;color:var(--brand)}
   </div>
 </section>
 
-<section class="info">
-  <p>Dział Mediów ZSEiL tworzą uczniowie, którzy promują naszą szkołę: przygotowują materiały na stronę, do social mediów i na szkolne wydarzenia. Dołącz do zespołu!</p>
-</section>
-
-<footer>© Zespół Szkół Elektronicznych i Licealnych w Warszawie</footer>
+<footer>© 2026 Zespół Szkół Elektronicznych i Licealnych w Warszawie</footer>
 </body>
 </html>
