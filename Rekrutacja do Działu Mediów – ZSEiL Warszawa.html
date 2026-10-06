@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Rekrutacja do Działu Mediów – ZSEiL Warszawa</title>
+<style>
+:root{
+  --brand:#323e97; --brand-2:#4a58c4; --text:#1a1a1a; --bg:#ffffff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* nagłówek: samo logo na środku (bez ruchu) */
+header{display:flex;justify-content:center;padding:22px 20px 18px;animation:fadeIn .8s both}
+.logo{display:flex;align-items:center;justify-content:center;text-decoration:none}
+.logo img{height:84px;max-width:100%;display:block}
+/* miejsce na własne logo – widoczne, gdy obrazek się nie załaduje */
+.logo-slot{display:none;width:220px;height:84px;border:2px dashed var(--brand);border-radius:18px;align-items:center;justify-content:center;color:var(--brand);font-weight:bold;font-size:15px}
+
+/* hero ze zdjęciem w tle */
+.hero{position:relative;color:#fff;margin:0 16px;border-radius:32px;overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(50,62,151,.93) 0%,rgba(50,62,151,.78) 50%,rgba(50,62,151,.40) 100%),
+    url("https://zseil.edu.pl/new/wp-content/uploads/2023/09/baner_ok_www-2.jpg") center/cover no-repeat,
+    #323e97}
+.hero .wrap{max-width:1100px;margin:0 auto;padding:56px 28px;display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+.hero h1{font-size:40px;line-height:1.2;margin:0 0 16px;animation:slideUp .8s .15s both}
+.hero p{font-size:19px;line-height:1.5;margin:0 0 32px;animation:slideUp .8s .3s both}
+.btn{display:inline-block;background:#fff;color:var(--brand);text-decoration:none;padding:18px 32px;font-size:18px;font-weight:bold;border-radius:999px;animation:slideUp .8s .45s both, pulse 2.4s 1.5s infinite;transition:transform .2s, box-shadow .2s}
+.btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.btn:active{transform:scale(.97)}
+
+/* telefon */
+.phone{width:240px;height:460px;margin:0 auto;background:#111;border-radius:40px;padding:10px;box-shadow:0 24px 50px rgba(0,0,0,.35);position:relative;animation:pop .8s .3s cubic-bezier(.2,.9,.3,1.2) both}
+.notch{position:absolute;top:18px;left:50%;width:72px;height:18px;background:#111;border-radius:12px;transform:translateX(-50%);z-index:3}
+.screen{background:#fff;border-radius:31px;height:100%;overflow:hidden;display:flex;flex-direction:column;color:#1a1a1a}
+.p-head{display:flex;align-items:center;gap:8px;padding:38px 12px 8px;font-size:12px;font-weight:bold}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.p-img{flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+  background:
+    linear-gradient(rgba(20,25,70,.30),rgba(20,25,70,.30)),
+    url("https://zseil.edu.pl/new/wp-content/uploads/2023/09/baner_ok_www-2.jpg") center/cover no-repeat,
+    linear-gradient(160deg,#4a58c4,#e36f5c)}
+.big{position:relative;width:132px;height:132px}
+.big svg{position:absolute;inset:0;width:100%;height:100%}
+.big .fill{fill:#ff3b5c;transform-origin:center;animation:like 4s ease-in-out infinite}
+.big .line{fill:none;stroke:#fff;stroke-width:5;stroke-linejoin:round}
+.p-foot{padding:10px 14px 16px;font-size:12px;position:relative;height:50px}
+.p-foot b{position:absolute;left:14px;top:12px}
+.cnt-a{animation:cntA 4s infinite}
+.cnt-b{opacity:0;animation:cntB 4s infinite}
+
+.info{padding:40px 20px 28px;text-align:center}
+.info p{margin:0 auto;max-width:640px;font-size:18px;line-height:1.5;background:#f1f3fc;border-radius:24px;padding:24px 28px;animation:slideUp .8s .6s both}
+footer{padding:18px;text-align:center;font-size:14px;color:var(--brand)}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
+/* lajk / odlajk w pętli */
+@keyframes like{
+  0%,12%{opacity:0;transform:scale(.2)}
+  22%{opacity:1;transform:scale(1.25)}
+  30%{opacity:1;transform:scale(1)}
+  68%{opacity:1;transform:scale(1)}
+  78%{opacity:0;transform:scale(.6)}
+  100%{opacity:0;transform:scale(.2)}
+}
+@keyframes cntA{0%,20%{opacity:1}22%,74%{opacity:0}76%,100%{opacity:1}}
+@keyframes cntB{0%,20%{opacity:0}22%,74%{opacity:1}76%,100%{opacity:0}}
+
+@media(max-width:800px){
+  .hero{border-radius:24px;margin:0 12px;background:
+    linear-gradient(rgba(50,62,151,.86),rgba(50,62,151,.86)),
+    url("https://zseil.edu.pl/new/wp-content/uploads/2023/09/baner_ok_www-2.jpg") center/cover no-repeat,#323e97}
+  .hero .wrap{grid-template-columns:1fr;padding:40px 22px}
+  .hero h1{font-size:30px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+  .big .fill{opacity:1}
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#" aria-label="ZSEiL – Zespół Szkół Elektronicznych i Licealnych w Warszawie">
+    <!-- LOGO: podmień src na własny plik lub link -->
+    <img src="https://zseil.edu.pl/new/wp-content/themes/zseil-2027/assets/images/xlogo-zseil.png.pagespeed.ic.aHk5XasK9m.png" alt="ZSEiL" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span class="logo-slot">Tu wstaw logo</span>
+  </a>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Rekrutacja do Działu Mediów</h1>
+      <p>Twórz materiały promocyjne naszej szkoły – zdjęcia, filmy i posty, które pokażą ZSEiL z najlepszej strony.</p>
+      <a class="btn" href="#aktualne-rekrutacje">Przejdź do aktualnych rekrutacji</a>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="p-head"><span class="avatar">Z</span>zseil_media</div>
+        <div class="p-img">
+          <div class="big">
+            <svg viewBox="0 0 24 24"><path class="fill" d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.800-8 11-8 11z"/></svg>
+            <svg viewBox="0 0 24 24"><path class="line" vector-effect="non-scaling-stroke" d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.800-8 11-8 11z"/></svg>
+          </div>
+        </div>
+        <div class="p-foot">
+          <b class="cnt-a">Lubi to: 1 247</b>
+          <b class="cnt-b">Lubi to: 1 248</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="info">
+  <p>Dział Mediów ZSEiL tworzą uczniowie, którzy promują naszą szkołę: przygotowują materiały na stronę, do social mediów i na szkolne wydarzenia. Dołącz do zespołu!</p>
+</section>
+
+<footer>© Zespół Szkół Elektronicznych i Licealnych w Warszawie</footer>
+</body>
+</html>
