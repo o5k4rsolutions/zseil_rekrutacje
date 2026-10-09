@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Aktualne rekrutacje – ZSEiL Warszawa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: '#323e97',
+          'brand-2': '#4a58c4',
+          err: '#c62839',
+        }
+      }
+    }
+  }
+</script>
+<style>
+:root{--brand:#323e97;--brand-2:#4a58c4;--text:#1a1a1a;--bg:#fff;--soft:#f1f3fc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+header{display:flex;justify-content:center;padding:22px 20px 18px;animation:fadeIn .8s both}
+header img{height:84px;max-width:100%;display:block}
+.hero{color:#fff;margin:0 16px;border-radius:32px;overflow:hidden;text-align:center;
+background:linear-gradient(rgba(50,62,151,.88),rgba(50,62,151,.88)),url("https://zseil.edu.pl/new/wp-content/uploads/2023/09/baner_ok_www-2.jpg") center/cover no-repeat,#323e97}
+.hero div{padding:44px 24px}
+.hero h1{font-size:36px;margin:0 0 12px;animation:slideUp .8s .1s both}
+.hero p{font-size:18px;line-height:1.5;margin:0 auto;max-width:560px;animation:slideUp .8s .25s both}
+main{max-width:680px;margin:28px auto 40px;padding:0 16px}
+.card{background:var(--soft);border-radius:24px;padding:26px 24px;animation:slideUp .7s both;display:flex;flex-direction:column;gap:16px;box-shadow:0 4px 12px rgba(50,62,151,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(50,62,151,.12)}
+.card h2{font-size:22px;margin:0;color:var(--brand)}
+.card p{font-size:16px;line-height:1.5;margin:0;color:#444}
+.btn-link{align-self:flex-start;background:var(--brand);color:#fff;text-decoration:none;border-radius:999px;padding:12px 30px;font-size:16px;font-weight:bold;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-link:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 20px rgba(50,62,151,.35);background:var(--brand-2)}
+.btn-link:active{transform:scale(.98)}
+footer{padding:22px;text-align:center;font-size:14px;color:var(--brand)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@media(max-width:600px){.hero h1{font-size:28px}.card{padding:20px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><img src="https://zseil.edu.pl/new/wp-content/themes/zseil-2027/assets/images/xlogo-zseil.png.pagespeed.ic.aHk5XasK9m.png" alt="ZSEiL"></header>
+
+<section class="hero"><div>
+<h1>Aktualne rekrutacje</h1>
+<p>Chcesz dołączyć do szkolnych zespołów i rozwijać swoje pasje? Sprawdź aktualne nabory w ZSEiL i zgłoś swoją kandydaturę!</p>
+</div></section>
+
+<main>
+<div class="card">
+<h2>Rekrutacja do działu Social Media</h2>
+<p>Dołącz do zespołu, który tworzy materiały promocyjne ZSEiL – zdjęcia, filmy i posty. Szukamy grafików, redaktorów, pomysłodawców, kamerzystów, montażystów oraz twarzy naszej szkoły!</p>
+<a class="btn-link" href="https://zseil-rekrutacje.pages.dev/rekrutacje/social-media/">Przejdź</a>
+</div>
+</main>
+
+<footer>© 2026 Zespół Szkół Elektronicznych i Licealnych w Warszawie</footer>
+</body>
+</html>
