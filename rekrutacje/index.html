@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>Nabór do Social Mediów – ZSEiL Warszawa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: '#323e97',
+          'brand-2': '#4a58c4',
+          err: '#c62839',
+        }
+      }
+    }
+  }
+</script>
 <style>
 :root{--brand:#323e97;--brand-2:#4a58c4;--text:#1a1a1a;--bg:#fff;--soft:#f1f3fc;--err:#c62839;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -25,9 +39,8 @@ form{display:flex;flex-direction:column;gap:18px}
 label.q,.q{display:block;font-weight:bold;font-size:17px;margin-bottom:10px}
 .q i{color:var(--err);font-style:normal}
 .hint{font-size:14px;line-height:1.45;color:#444;margin:0 0 12px}
-.edu{display:inline-flex;align-items:center;gap:6px;font-weight:bold;color:var(--brand);background:#fff;border-radius:999px;padding:3px 10px 3px 4px}
-.edu img{height:20px;display:block}
-.edu span.fb{display:none;background:var(--brand);color:#fff;border-radius:999px;padding:2px 8px;font-size:12px}
+.edu{display:inline-flex;align-items:center;gap:6px;font-weight:bold;color:var(--brand);background:#fff;border-radius:999px;padding:3px 10px 3px 6px}
+.edu img{height:20px;display:block;filter: brightness(0) saturate(100%) invert(24%) sepia(51%) saturate(1478%) hue-rotate(213deg) brightness(96%) contrast(92%);}
 input[type=text],input[type=email],textarea{width:100%;font:inherit;font-size:16px;padding:14px 16px;border:2px solid transparent;border-radius:16px;background:#fff;transition:border-color .2s,box-shadow .2s}
 textarea{min-height:110px;resize:vertical}
 input:focus,textarea:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 4px rgba(74,88,196,.15)}
@@ -71,8 +84,8 @@ footer{padding:22px;text-align:center;font-size:14px;color:var(--brand)}
 <form id="f" novalidate>
 <div class="card">
 <label class="q" for="email">Adres e-mail <i>*</i></label>
-<p class="hint">Może to być adres <span class="edu"><img id="edulogo" src="eduwarszawa.png" alt=""><span class="fb">eduwarszawa</span> eduwarszawa</span>, lecz musisz mieć do niego dostęp – odpowiedź wyślemy właśnie tam.</p>
-<input type="email" id="email" name="email" placeholder="np. jan.kowalski@eduwarszawa.pl" autocomplete="email" maxlength="120">
+<p class="hint">Może to być adres <span class="edu"><img id="edulogo" src="eduwarszawa.png" alt=""> eduwarszawa</span>, lecz musisz mieć do niego dostęp – odpowiedź wyślemy właśnie tam.</p>
+<input type="email" id="email" name="email" placeholder="np. jan.kowalski@uczen.eduwarszawa.pl" autocomplete="email" maxlength="120">
 <p class="err" data-for="email"></p>
 </div>
 
@@ -132,18 +145,58 @@ footer{padding:22px;text-align:center;font-size:14px;color:var(--brand)}
 <svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28"/><path d="M19 33l9 9 17-19"/></svg>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkBw4-huCV4tCVFhPdqBZJHiYGY8EfDSY",
+  authDomain: "zseilrekru.firebaseapp.com",
+  projectId: "zseilrekru",
+  storageBucket: "zseilrekru.firebasestorage.app",
+  messagingSenderId: "661697879582",
+  appId: "1:661697879582:web:a204137e5a4eaf6806d80f"
+};
+
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'zseil-social-recruitment';
+const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) ? JSON.parse(__firebase_config) : customFirebaseConfig;
+
+let app, db, auth;
 const $=id=>document.getElementById(id);
+
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  
+  if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+    signInWithCustomToken(auth, __initial_auth_token).catch(() => signInAnonymously(auth));
+  } else {
+    signInAnonymously(auth);
+  }
+} catch(e) {
+  console.error("Firebase init error:", e);
+}
+
 $("logo2").src=$("logo").src;
 $("edulogo").onerror=function(){this.style.display="none"};
+
 const setErr=(k,m)=>{const e=document.querySelector(`[data-for="${k}"]`);if(e)e.textContent=m||""};
+
 $("f").addEventListener("submit",async ev=>{
   ev.preventDefault();
   const d={
-    email:$("email").value.trim(),name:$("name").value.trim(),klasa:$("klasa").value.trim(),
+    email:$("email").value.trim(),
+    name:$("name").value.trim(),
+    klasa:$("klasa").value.trim(),
     roles:[...document.querySelectorAll('input[name=roles]:checked')].map(x=>x.value),
     balance:(document.querySelector('input[name=balance]:checked')||{}).value||"",
-    why:$("why").value.trim(),feedback:$("feedback").value.trim(),website:$("website").value
+    why:$("why").value.trim(),
+    feedback:$("feedback").value.trim(),
+    website:$("website").value,
+    status: 'Oczekujące',
+    createdAt: new Date().toISOString()
   };
   let bad=false;const chk=(k,c,m)=>{setErr(k,c?"":m);if(!c)bad=true};
   chk("email",/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email),"Podaj poprawny adres e-mail.");
@@ -155,12 +208,15 @@ $("f").addEventListener("submit",async ev=>{
   $("formerr").textContent="";
   if(bad){const f=document.querySelector(".err:not(:empty)");f&&f.scrollIntoView({behavior:"smooth",block:"center"});return}
   $("btn").disabled=true;$("btn").textContent="Wysyłanie…";
+  
   try{
-    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});
-    if(!r.ok)throw 0;
-    $("thanks").classList.add("show");$("f").reset();
-  }catch{
-    $("formerr").textContent="Nie udało się wysłać zgłoszenia. Spróbuj ponownie za chwilę.";
+    if(!db) throw new Error("Database offline");
+    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'submissions'), d);
+    $("thanks").classList.add("show");
+    $("f").reset();
+  }catch(err){
+    console.error(err);
+    $("formerr").textContent="Nie udało się wysłać zgłoszenia. Spróbuj ponownie później.";
     $("btn").disabled=false;$("btn").textContent="Wyślij zgłoszenie";
   }
 });
