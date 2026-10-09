@@ -150,7 +150,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const firebaseConfig = {
+const customFirebaseConfig = {
   apiKey: "AIzaSyAkBw4-huCV4tCVFhPdqBZJHiYGY8EfDSY",
   authDomain: "zseilrekru.firebaseapp.com",
   projectId: "zseilrekru",
@@ -163,7 +163,7 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'zseil-social-recruit
 const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) ? JSON.parse(__firebase_config) : customFirebaseConfig;
 
 let app, db, auth;
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 try {
   app = initializeApp(firebaseConfig);
@@ -179,45 +179,58 @@ try {
   console.error("Firebase init error:", e);
 }
 
-$("logo2").src=$("logo").src;
-$("edulogo").onerror=function(){this.style.display="none"};
+$("logo2").src = $("logo").src;
+$("edulogo").onerror = function() { this.style.display = "none"; };
 
-const setErr=(k,m)=>{const e=document.querySelector(`[data-for="${k}"]`);if(e)e.textContent=m||""};
+const setErr = (k, m) => {
+  const e = document.querySelector(`[data-for="${k}"]`);
+  if (e) e.textContent = m || "";
+};
 
-$("f").addEventListener("submit",async ev=>{
+$("f").addEventListener("submit", async ev => {
   ev.preventDefault();
-  const d={
-    email:$("email").value.trim(),
-    name:$("name").value.trim(),
-    klasa:$("klasa").value.trim(),
-    roles:[...document.querySelectorAll('input[name=roles]:checked')].map(x=>x.value),
-    balance:(document.querySelector('input[name=balance]:checked')||{}).value||"",
-    why:$("why").value.trim(),
-    feedback:$("feedback").value.trim(),
-    website:$("website").value,
+  const d = {
+    email: $("email").value.trim(),
+    name: $("name").value.trim(),
+    klasa: $("klasa").value.trim(),
+    roles: [...document.querySelectorAll('input[name=roles]:checked')].map(x => x.value),
+    balance: (document.querySelector('input[name=balance]:checked') || {}).value || "",
+    why: $("why").value.trim(),
+    feedback: $("feedback").value.trim(),
+    website: $("website").value,
     status: 'Oczekujące',
     createdAt: new Date().toISOString()
   };
-  let bad=false;const chk=(k,c,m)=>{setErr(k,c?"":m);if(!c)bad=true};
-  chk("email",/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email),"Podaj poprawny adres e-mail.");
-  chk("name",d.name.length>2,"Podaj imię i nazwisko.");
-  chk("klasa",d.klasa,"Podaj klasę.");
-  chk("roles",d.roles.length,"Zaznacz przynajmniej jedną odpowiedź.");
-  chk("balance",d.balance,"Wybierz odpowiedź.");
-  chk("why",d.why,"Napisz kilka słów.");
-  $("formerr").textContent="";
-  if(bad){const f=document.querySelector(".err:not(:empty)");f&&f.scrollIntoView({behavior:"smooth",block:"center"});return}
-  $("btn").disabled=true;$("btn").textContent="Wysyłanie…";
+  let bad = false;
+  const chk = (k, c, m) => {
+    setErr(k, c ? "" : m);
+    if (!c) bad = true;
+  };
+  chk("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email), "Podaj poprawny adres e-mail.");
+  chk("name", d.name.length > 2, "Podaj imię i nazwisko.");
+  chk("klasa", d.klasa, "Podaj klasę.");
+  chk("roles", d.roles.length, "Zaznacz przynajmniej jedną odpowiedź.");
+  chk("balance", d.balance, "Wybierz odpowiedź.");
+  chk("why", d.why, "Napisz kilka słów.");
+  $("formerr").textContent = "";
+  if (bad) {
+    const f = document.querySelector(".err:not(:empty)");
+    f && f.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  $("btn").disabled = true;
+  $("btn").textContent = "Wysyłanie…";
   
-  try{
-    if(!db) throw new Error("Database offline");
+  try {
+    if (!db) throw new Error("Database offline");
     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'submissions'), d);
     $("thanks").classList.add("show");
     $("f").reset();
-  }catch(err){
+  } catch (err) {
     console.error(err);
-    $("formerr").textContent="Nie udało się wysłać zgłoszenia. Spróbuj ponownie później.";
-    $("btn").disabled=false;$("btn").textContent="Wyślij zgłoszenie";
+    $("formerr").textContent = "Nie udało się wysłać zgłoszenia. Spróbuj ponownie później.";
+    $("btn").disabled = false;
+    $("btn").textContent = "Wyślij zgłoszenie";
   }
 });
 </script>
