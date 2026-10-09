@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Panel Zarządzania Rekrutacją – ZSEiL Warszawa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: '#323e97',
+          'brand-2': '#4a58c4',
+          err: '#c62839',
+        }
+      }
+    }
+  }
+</script>
+<style>
+:root{--brand:#323e97;--brand-2:#4a58c4;--text:#1a1a1a;--bg:#f8fafc;--soft:#f1f3fc;--err:#c62839;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+header{background:#fff;border-bottom:1px solid #e2e8f0;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+header img{height:50px;display:block}
+main{max-width:1000px;width:100%;margin:24px auto;padding:0 16px;flex:1}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.02)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flex items-center gap-4">
+    <img id="logo" src="https://zseil.edu.pl/new/wp-content/themes/zseil-2027/assets/images/xlogo-zseil.png.pagespeed.ic.aHk5XasK9m.png" alt="ZSEiL">
+    <div>
+      <h1 class="font-bold text-lg text-gray-900 leading-tight">Panel Rekrutacji do Social Mediów</h1>
+      <p class="text-xs text-gray-500">Zarządzanie zgłoszeniami kandydatów w czasie rzeczywistym</p>
+    </div>
+  </div>
+  <div id="authStatus" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-amber-100 text-amber-800">Łączenie z bazą...</div>
+</header>
+
+<main>
+  <div class="card space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">Lista zgłoszeń</h2>
+        <p class="text-xs text-gray-500 mt-0.5">Zmień status kandydata, aby zaktualizować jego kwalifikację</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="counter" class="bg-indigo-50 text-brand text-xs font-bold px-3 py-1.5 rounded-xl border border-indigo-100">0 zgłoszeń</span>
+      </div>
+    </div>
+
+    <div id="adminLoading" class="text-center py-16 text-gray-500">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand border-t-transparent mb-3"></div>
+      <p>Pobieranie zgłoszeń z bazy Firebase...</p>
+    </div>
+
+    <div id="adminList" class="space-y-3 hidden"></div>
+
+    <div id="adminEmpty" class="text-center py-16 text-gray-400 hidden">
+      <p class="text-lg font-medium">Brak zgłoszeń w bazie.</p>
+      <p class="text-xs mt-1">Gdy kandydaci wyślą formularz, pojawią się tutaj natychmiast.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="text-center py-6 text-xs text-gray-400">
+  © 2026 Zespół Szkół Elektronicznych i Licealnych w Warszawie — Panel Administratora
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+// =========================================================================
+// MIEJSCE NA TWOJE API / KONFIGURACJĘ FIREBASE (Taka sama jak w formularzu)
+// =========================================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAkBw4-huCV4tCVFhPdqBZJHiYGY8EfDSY",
+  authDomain: "zseilrekru.firebaseapp.com",
+  projectId: "zseilrekru",
+  storageBucket: "zseilrekru.firebasestorage.app",
+  messagingSenderId: "661697879582",
+  appId: "1:661697879582:web:a204137e5a4eaf6806d80f"
+};
+// =========================================================================
+
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'zseil-social-recruitment';
+const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config) ? JSON.parse(__firebase_config) : customFirebaseConfig;
+
+let app, db, auth;
+const $=id=>document.getElementById(id);
+
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  
+  const handleAuthReady = () => {
+    $("authStatus").textContent = "Połączono (Online)";
+    $("authStatus").className = "text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800";
+    loadSubmissions();
+  };
+
+  if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+    signInWithCustomToken(auth, __initial_auth_token).then(handleAuthReady).catch(() => {
+      signInAnonymously(auth).then(handleAuthReady);
+    });
+  } else {
+    signInAnonymously(auth).then(handleAuthReady);
+  }
+} catch(e) {
+  console.error("Firebase init error:", e);
+  $("authStatus").textContent = "Błąd bazy danych";
+  $("authStatus").className = "text-xs font-semibold px-3 py-1.5 rounded-full bg-rose-100 text-rose-800";
+}
+
+function loadSubmissions() {
+  if(!db) return;
+  const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+  
+  onSnapshot(colRef, (snapshot) => {
+    $("adminLoading").classList.add("hidden");
+    const list = $("adminList");
+    list.innerHTML = "";
+    
+    $("counter").textContent = `${snapshot.size} zgłoszeń`;
+
+    if(snapshot.empty) {
+      $("adminEmpty").classList.remove("hidden");
+      list.classList.add("hidden");
+      return;
+    }
+    
+    $("adminEmpty").classList.add("hidden");
+    list.classList.remove("hidden");
+    
+    const docs = [];
+    snapshot.forEach(docSnap => {
+      docs.push({ id: docSnap.id, ...docSnap.data() });
+    });
+    
+    docs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    
+    docs.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-sm transition";
+      
+      const statusColor = item.status === 'Zakwalifikowany' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                          item.status === 'Odrzucony' ? 'bg-rose-100 text-rose-800 border-rose-300' : 'bg-amber-100 text-amber-800 border-amber-300';
+      
+      card.innerHTML = `
+        <div class="space-y-1.5 flex-1">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="font-bold text-gray-900 text-base">${escapeHtml(item.name)}</span>
+            <span class="bg-indigo-100 text-brand font-bold text-xs px-2.5 py-1 rounded-md">Klasa ${escapeHtml(item.klasa)}</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full border font-medium ${statusColor}">${escapeHtml(item.status || 'Oczekujące')}</span>
+          </div>
+          <p class="text-sm text-gray-600 font-medium">📧 <a href="mailto:${escapeHtml(item.email)}" class="text-brand underline">${escapeHtml(item.email)}</a></p>
+          <div class="flex flex-wrap gap-1 mt-1">
+            ${(item.roles || []).map(r => `<span class="bg-white border text-gray-600 text-xs px-2 py-0.5 rounded shadow-xs">${escapeHtml(r)}</span>`).join('')}
+          </div>
+          <div class="text-xs text-gray-600 mt-2 space-y-1 bg-white p-3 rounded-xl border border-gray-100">
+            <p><strong>Motywacja:</strong> ${escapeHtml(item.why)}</p>
+            <p><strong>Pogodzenie nauki:</strong> ${escapeHtml(item.balance)}</p>
+            ${item.feedback ? `<p><strong>Uwagi do profili:</strong> ${escapeHtml(item.feedback)}</p>` : ''}
+          </div>
+        </div>
+        <div class="flex items-center gap-2 self-end md:self-center shrink-0">
+          <label class="text-xs text-gray-500 font-medium">Status:</label>
+          <select onchange="window.updateStatus('${item.id}', this.value)" class="text-xs font-semibold bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-sm focus:outline-none focus:border-brand cursor-pointer">
+            <option value="Oczekujące" ${item.status==='Oczekujące'?'selected':''}>⏳ Oczekujące</option>
+            <option value="Zakwalifikowany" ${item.status==='Zakwalifikowany'?'selected':''}>✅ Zakwalifikowany</option>
+            <option value="Odrzucony" ${item.status==='Odrzucony'?'selected':''}>❌ Odrzucony</option>
+          </select>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }, (error) => {
+    console.error("Firestore error:", error);
+    $("adminLoading").innerHTML = `<p class="text-rose-600 font-medium">Błąd wczytywania danych. Sprawdź reguły uprawnień w Firebase.</p>`;
+  });
+}
+
+window.updateStatus = async function(docId, newStatus) {
+  try {
+    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', docId);
+    await updateDoc(docRef, { status: newStatus });
+  } catch(e) {
+    console.error("Error updating status:", e);
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+</script>
+</body>
+</html>
