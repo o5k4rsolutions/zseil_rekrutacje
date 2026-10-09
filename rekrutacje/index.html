@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Nabór do Social Mediów – ZSEiL Warszawa</title>
+<style>
+:root{--brand:#323e97;--brand-2:#4a58c4;--text:#1a1a1a;--bg:#fff;--soft:#f1f3fc;--err:#c62839;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+header{display:flex;justify-content:center;padding:22px 20px 18px;animation:fadeIn .8s both}
+header img{height:84px;max-width:100%;display:block}
+.hero{color:#fff;margin:0 16px;border-radius:32px;overflow:hidden;text-align:center;
+background:linear-gradient(rgba(50,62,151,.88),rgba(50,62,151,.88)),url("https://zseil.edu.pl/new/wp-content/uploads/2023/09/baner_ok_www-2.jpg") center/cover no-repeat,#323e97}
+.hero div{padding:44px 24px}
+.hero h1{font-size:36px;margin:0 0 12px;animation:slideUp .8s .1s both}
+.hero p{font-size:18px;line-height:1.5;margin:0 auto;max-width:560px;animation:slideUp .8s .25s both}
+main{max-width:680px;margin:28px auto 10px;padding:0 16px}
+form{display:flex;flex-direction:column;gap:18px}
+.card{background:var(--soft);border-radius:24px;padding:22px 24px;animation:slideUp .7s both}
+.card:nth-child(2){animation-delay:.05s}.card:nth-child(3){animation-delay:.1s}.card:nth-child(4){animation-delay:.15s}
+label.q,.q{display:block;font-weight:bold;font-size:17px;margin-bottom:10px}
+.q i{color:var(--err);font-style:normal}
+.hint{font-size:14px;line-height:1.45;color:#444;margin:0 0 12px}
+.edu{display:inline-flex;align-items:center;gap:6px;font-weight:bold;color:var(--brand);background:#fff;border-radius:999px;padding:3px 10px 3px 4px}
+.edu img{height:20px;display:block}
+.edu span.fb{display:none;background:var(--brand);color:#fff;border-radius:999px;padding:2px 8px;font-size:12px}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;font-size:16px;padding:14px 16px;border:2px solid transparent;border-radius:16px;background:#fff;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:110px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 4px rgba(74,88,196,.15)}
+.opt{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 16px;margin-bottom:8px;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .2s,background .2s}
+.opt:hover{transform:translateX(4px)}
+.opt:has(input:checked){border-color:var(--brand);background:#e8ebfb}
+.opt input{width:20px;height:20px;accent-color:var(--brand);flex:none}
+.err{color:var(--err);font-size:14px;margin:6px 0 0;min-height:0}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+button.send{align-self:center;background:var(--brand);color:#fff;border:0;border-radius:999px;padding:18px 44px;font-size:18px;font-weight:bold;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s}
+button.send:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 24px rgba(50,62,151,.35)}
+button.send:active{transform:scale(.97)}
+button.send:disabled{opacity:.6;cursor:wait;transform:none}
+#formerr{text-align:center;color:var(--err);font-weight:bold;margin:0}
+footer{padding:22px;text-align:center;font-size:14px;color:var(--brand)}
+#thanks{position:fixed;inset:0;background:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:10}
+#thanks.show{display:flex;animation:fadeIn .5s both}
+#thanks img{height:110px;max-width:80%;animation:pop 1s .1s cubic-bezier(.2,.9,.3,1.2) both}
+#thanks h2{color:var(--brand);font-size:28px;margin:28px 0 12px;animation:slideUp .8s .6s both}
+#thanks p{font-size:18px;line-height:1.5;max-width:520px;margin:0;animation:slideUp .8s .85s both}
+.ring{width:70px;height:70px;margin-top:28px;animation:pop .8s 1.1s both}
+.ring circle{fill:none;stroke:var(--brand);stroke-width:4;stroke-dasharray:176;stroke-dashoffset:176;animation:draw .8s 1.2s forwards}
+.ring path{fill:none;stroke:var(--brand);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s 1.8s forwards}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media(max-width:600px){.hero h1{font-size:28px}.card{padding:18px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ring circle,.ring path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<header><img id="logo" src="https://zseil.edu.pl/new/wp-content/themes/zseil-2027/assets/images/xlogo-zseil.png.pagespeed.ic.aHk5XasK9m.png" alt="ZSEiL"></header>
+
+<section class="hero"><div>
+<h1>Nabór do Social Mediów</h1>
+<p>Dołącz do zespołu, który tworzy materiały promocyjne ZSEiL – zdjęcia, filmy i posty. Wypełnij formularz i opowiedz nam o sobie!</p>
+</div></section>
+
+<main>
+<form id="f" novalidate>
+<div class="card">
+<label class="q" for="email">Adres e-mail <i>*</i></label>
+<p class="hint">Może to być adres <span class="edu"><img id="edulogo" src="eduwarszawa.png" alt=""><span class="fb">eduwarszawa</span> eduwarszawa</span>, lecz musisz mieć do niego dostęp – odpowiedź wyślemy właśnie tam.</p>
+<input type="email" id="email" name="email" placeholder="np. jan.kowalski@eduwarszawa.pl" autocomplete="email" maxlength="120">
+<p class="err" data-for="email"></p>
+</div>
+
+<div class="card">
+<label class="q" for="name">Imię i nazwisko <i>*</i></label>
+<input type="text" id="name" autocomplete="name" maxlength="80">
+<p class="err" data-for="name"></p>
+<label class="q" for="klasa" style="margin-top:16px">Klasa <i>*</i></label>
+<input type="text" id="klasa" placeholder="np. 2A" maxlength="20">
+<p class="err" data-for="klasa"></p>
+</div>
+
+<div class="card">
+<div class="q">Jako kto widzisz się w naszym zespole? <i>*</i></div>
+<p class="hint">Możesz zaznaczyć kilka odpowiedzi.</p>
+<label class="opt"><input type="checkbox" name="roles" value="Grafik"> Grafik</label>
+<label class="opt"><input type="checkbox" name="roles" value="Redagowanie i pisanie postów"> Redagowanie i pisanie postów itp.</label>
+<label class="opt"><input type="checkbox" name="roles" value="Pomysłodawca"> Pomysłodawca</label>
+<label class="opt"><input type="checkbox" name="roles" value="Kamerzysta"> Kamerzysta</label>
+<label class="opt"><input type="checkbox" name="roles" value="Montażysta"> Montażysta</label>
+<label class="opt"><input type="checkbox" name="roles" value="Twarz naszej szkoły"> Twarz naszej szkoły, osoba występująca na naszych postach</label>
+<p class="err" data-for="roles"></p>
+</div>
+
+<div class="card">
+<div class="q">Czy jesteś w stanie pogodzić naukę z udziałem w naszym zespole? <i>*</i></div>
+<label class="opt"><input type="radio" name="balance" value="Tak"> Tak</label>
+<label class="opt"><input type="radio" name="balance" value="Nie"> Nie</label>
+<label class="opt"><input type="radio" name="balance" value="Nie wiem"> Nie wiem</label>
+<p class="err" data-for="balance"></p>
+</div>
+
+<div class="card">
+<label class="q" for="why">Dlaczego chciałbyś/chciałabyś do nas dołączyć? <i>*</i></label>
+<textarea id="why" maxlength="1000"></textarea>
+<p class="err" data-for="why"></p>
+</div>
+
+<div class="card">
+<label class="q" for="feedback">Czy masz jakieś zdanie wobec naszych profilów? Czy coś powinniśmy zmienić? <span style="font-weight:normal">(nie wymagane)</span></label>
+<textarea id="feedback" maxlength="1000"></textarea>
+</div>
+
+<div class="hp" aria-hidden="true"><label>Nie wypełniaj <input type="text" id="website" tabindex="-1" autocomplete="off"></label></div>
+
+<p id="formerr"></p>
+<button class="send" type="submit" id="btn">Wyślij zgłoszenie</button>
+</form>
+</main>
+
+<footer>© 2026 Zespół Szkół Elektronicznych i Licealnych w Warszawie</footer>
+
+<div id="thanks" role="status" aria-live="polite">
+<img id="logo2" alt="ZSEiL">
+<h2>Dziękujemy za zgłoszenie naboru do naszego zespołu!</h2>
+<p>Odpowiemy na nie najszybciej jak to możliwe. Oczekuj na wiadomość zwrotną na podanym przez ciebie mailu.</p>
+<svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28"/><path d="M19 33l9 9 17-19"/></svg>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+$("logo2").src=$("logo").src;
+$("edulogo").onerror=function(){this.style.display="none"};
+const setErr=(k,m)=>{const e=document.querySelector(`[data-for="${k}"]`);if(e)e.textContent=m||""};
+$("f").addEventListener("submit",async ev=>{
+  ev.preventDefault();
+  const d={
+    email:$("email").value.trim(),name:$("name").value.trim(),klasa:$("klasa").value.trim(),
+    roles:[...document.querySelectorAll('input[name=roles]:checked')].map(x=>x.value),
+    balance:(document.querySelector('input[name=balance]:checked')||{}).value||"",
+    why:$("why").value.trim(),feedback:$("feedback").value.trim(),website:$("website").value
+  };
+  let bad=false;const chk=(k,c,m)=>{setErr(k,c?"":m);if(!c)bad=true};
+  chk("email",/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email),"Podaj poprawny adres e-mail.");
+  chk("name",d.name.length>2,"Podaj imię i nazwisko.");
+  chk("klasa",d.klasa,"Podaj klasę.");
+  chk("roles",d.roles.length,"Zaznacz przynajmniej jedną odpowiedź.");
+  chk("balance",d.balance,"Wybierz odpowiedź.");
+  chk("why",d.why,"Napisz kilka słów.");
+  $("formerr").textContent="";
+  if(bad){const f=document.querySelector(".err:not(:empty)");f&&f.scrollIntoView({behavior:"smooth",block:"center"});return}
+  $("btn").disabled=true;$("btn").textContent="Wysyłanie…";
+  try{
+    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});
+    if(!r.ok)throw 0;
+    $("thanks").classList.add("show");$("f").reset();
+  }catch{
+    $("formerr").textContent="Nie udało się wysłać zgłoszenia. Spróbuj ponownie za chwilę.";
+    $("btn").disabled=false;$("btn").textContent="Wyślij zgłoszenie";
+  }
+});
+</script>
+</body>
+</html>
